@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+int broj_suglasnika(char* str) {
+    int n = strlen(str);
+    int broj = 0;
+    for (int i = 0; i < n; i++) {
+        char c = *(str + i);
+        if (c >= 'a' && c <= 'z' && c != 'a' && c != 'e' && c != 'i' && c != 'o' && c != 'u') {
+            broj++;
+        }
+    }
+    return broj;
+}
+
+int main() {
+    char* dani[7] = {"ponedjeljak", "utorak", "srijedu", "četvrtak", "petak", "subotu", "nedjelju"};
+    int n;
+    do {
+        printf("Unesite broj dana u tjednu (1-7): ");
+        scanf("%d", &n);
+        if (n < 1 || n > 7) {
+            printf("Krivo uneseni broj za dan!\n");
+        }
+    } while (n < 1 || n > 7);
+
+    char* najvise_suglasnika = NULL;
+    int najvise_suglasnika_broj = -1;
+    for (int i = 0; i < 7; i++) {
+        int broj = broj_suglasnika(*(dani + i));
+        if (broj > najvise_suglasnika_broj) {
+            najvise_suglasnika_broj = broj;
+            najvise_suglasnika = *(dani + i);
+        }
+    }
+
+    int duljina = strlen(najvise_suglasnika);
+    printf("Dan s najvise suglasnika: %s (%d suglasnika)\n", najvise_suglasnika, najvise_suglasnika_broj);
+    printf("Dan s najvise suglasnika naopako: ");
+    for (int i = duljina - 1; i >= 0; i--) {
+        printf("%c", *(najvise_suglasnika + i));
+    }
+    printf("\n");
+
+    return 0;
+}
