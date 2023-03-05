@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char *mjeseci[12] = {"Sijecanj", "Veljaca", "Ozujak", "Travanj", "Svibanj", "Lipanj", 
+                         "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"};
+    int n;
+
+    int max_avg = 0;
+    int max_avg_month = 0;
+
+    // Pronađi mjesec s najvećom srednjom vrijednošću znakova u imenu
+    for (int i = 0; i < 12; i++) {
+        int len = strlen(*(mjeseci + i));
+        int sum = 0;
+
+        for (int j = 0; j < len; j++) {
+            sum += *(*(mjeseci + i) + j);
+        }
+
+        int avg = sum / len;
+
+        if (avg > max_avg) {
+            max_avg = avg;
+            max_avg_month = i;
+        }
+    }
+
+    // Ispiši naopako ime pronađenog mjeseca
+    char *naopako = *(mjeseci + max_avg_month);
+    int len = strlen(naopako);
+
+    printf("Mjesec s najvecom srednjom vrijednosti znakova u imenu je: %s\n", naopako);
+    printf("Naopako ime mjeseca: ");
+
+    for (int i = len - 1; i >= 0; i--) {
+        printf("%c", *(naopako + i));
+    }
+    printf("\n");
+
+    return 0;
+}
