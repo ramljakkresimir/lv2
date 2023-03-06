@@ -1,0 +1,162 @@
+5.
+float** dinamicko(int n);
+void popunjavanjeMatrice(double** mat, int n);
+void ispisMatrice(double** mat, int n);
+double pronadjiMax(double** mat, int n);
+int main(void) {
+
+	int n;
+	do {
+		printf("Unesi broj redova odnosno matrica\n");
+		scanf_s("%d", &n);
+	} while (n < 2 || n>8);
+	double** mat = dinamicko(n);
+	popunjavanjeMatrice(mat, n);
+	printf("\nIspis matrice:\n");
+	ispisMatrice(mat, n);
+
+	double max = pronadjiMax(mat, n);
+	printf("\nNajveci element matrice iznad glavne i sporedne dijagonale: %.2f\n ", max);
+
+	for (int i = 0; i < n; i++) {
+		free(mat[i]);
+	}
+	free(mat);
+
+
+	return 0;
+}
+float** dinamicko(int n) {
+	float** mat =(float**) malloc(n * sizeof(float*));
+	for (int i = 0; i < n; i++) {
+		mat[i] = (float*)malloc(n * sizeof(float));
+	}
+	return mat;
+}
+void popunjavanjeMatrice(double** mat, int n) {
+	srand(time(NULL));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			mat[i][j] = (double)rand() / RAND_MAX * 7.0 - -1.25;
+		}
+	}
+}
+void ispisMatrice(double** mat, int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			printf("%.2f\t", mat[i][j]);
+		}
+		printf("\n");
+	}
+
+
+}
+double pronadjiMax(double** mat, int n) {
+	double max = mat[0][1];
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (mat[i][j] > max) {
+				max = mat[i][j];
+			}
+			if (mat[i][j] > max) {
+				max = mat[i][j];
+			}
+		}
+	}
+
+	return max;
+}
+
+7.
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MIN_M 2
+#define MAX_M 20
+#define MIN_N 5
+#define MAX_N 25
+
+int* generiraj_polje_ps_vrijednosti(int n) {
+    int* ps_vrijednosti = (int*)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        ps_vrijednosti[i] = rand() % 2 ? 1 : -1;
+    }
+    return ps_vrijednosti;
+}
+
+int binarni_u_dekadski(int* binarni, int n) {
+    int dekadski = 0;
+    for (int i = 0; i < n; i++) {
+        if (binarni[i] == 1) {
+            dekadski += 1 << i;
+        }
+    }
+    if (binarni[0] == -1) {
+        dekadski -= 1 << n;
+    }
+    return dekadski;
+}
+
+int** dinamicki_zauzmi_matricu(int m, int n) {
+    int** mat = (int**)malloc(m * sizeof(int*));
+    for (int i = 0; i < m; i++) {
+        mat[i] = (int*)malloc(n * sizeof(int));
+    }
+    return mat;
+}
+
+void popuni_matricu(int** mat, int m, int n, int* ps_vrijednosti) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j += 8) {
+            int binarni[8];
+            for (int k = 0; k < 8; k++) {
+                binarni[k] = ps_vrijednosti[k + j];
+            }
+            int dekadski = binarni_u_dekadski(binarni, 8);
+            mat[i][j / 8] = dekadski;
+        }
+    }
+}
+
+float izracunaj_srednju_vrijednost(int** mat, int m, int n) {
+    float suma = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            suma += mat[i][j];
+        }
+    }
+    return suma / (m * n);
+}
+
+void ispisi_matricu(int** mat, int m, int n) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ", mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void oslobodi_matricu(int** mat, int m) {
+    for (int i = 0; i < m; i++) {
+        free(mat[i]);
+    }
+    free(mat);
+}
+
+int main() {
+    int m, n;
+    do {
+        printf("Unesite broj redova m (%d <= m <= %d): ", MIN_M, MAX_M);
+        scanf("%d", &m);
+    } while (m < MIN_M || m > MAX_M);
+
+    do {
+        printf("Unesite broj stupaca n (%d <= n <= %d): ", MIN_N, MAX_N);
+        scanf("%d", &n);
+    } while (n < MIN_N || n > MAX_N);
+
+    srand(time(NULL));
+    int*
+
